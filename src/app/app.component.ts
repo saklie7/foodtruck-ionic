@@ -5,6 +5,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { TruckMapPage } from '../pages/truck-map/truck-map';
+import { TruckListPage } from '../pages/truck-list/truck-list';
+import { TruckInfoPage } from '../pages/truck-info/truck-info';
+import { CanivalPage } from '../pages/canival/canival';
+import { ReviewsPage } from '../pages/reviews/reviews';
+import { SupportPage } from '../pages/support/support';
+import { FavoritesPage } from '../pages/favorites/favorites';
+import { LoginPage } from '../pages/login/login';
+import { JoinPage } from '../pages/join/join';
 
 @Component({
   templateUrl: 'app.html'
@@ -21,8 +30,13 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: '푸드트럭', component: HomePage },
+      // { title: 'List', component: ListPage },
+      { title: '트럭 지도', component: TruckMapPage },
+      { title: '트럭 목록', component: TruckListPage},
+      // { title: '', component: },
+      { title: '축제 정보', component: CanivalPage},
+      { title: '고객 센터', component: SupportPage},
     ];
 
   }

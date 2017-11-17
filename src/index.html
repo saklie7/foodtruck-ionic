@@ -15,35 +15,48 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+ <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+
+
   <!-- cordova.js required for cordova apps (remove if not needed) -->
   <script src="cordova.js"></script>
 
   <!-- un-comment this code to enable service worker
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.error('Error', err));
-    }
-  </script>-->
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+  .then(() => console.log('service worker installed'))
+  .catch(err => console.error('Error', err));
+}
+</script>-->
 
-  <link href="build/main.css" rel="stylesheet">
+<link href="build/main.css" rel="stylesheet">
 
 </head>
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+  <ion-app>
+    <div class="text-center" style="margin: 50%">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    </div>
+    <span class="sr-only">Loading...</span>
+  </ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
 
   <!-- The vendor js is generated during the build process
-       It contains all of the dependencies in node_modules -->
+  It contains all of the dependencies in node_modules -->
   <script src="build/vendor.js"></script>
 
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
+
+
 
 </body>
 </html>

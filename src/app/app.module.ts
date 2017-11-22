@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { AgmCoreModule } from '@agm/core';
-
+import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -19,7 +18,7 @@ import { JoinPage } from '../pages/join/join';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { HTTP } from '@ionic-native/http';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { TruckProvider } from '../providers/truck/truck';
 
@@ -41,11 +40,7 @@ import { TruckProvider } from '../providers/truck/truck';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBFQmGdDApLDMW8Fp3F8VtOv9kwAg1xAUU',
-      region: "kr",
-      libraries: ["places"],
-    }),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -66,7 +61,9 @@ import { TruckProvider } from '../providers/truck/truck';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    TruckProvider,
+    Geolocation,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    TruckProvider
   ]
 })
 export class AppModule {}

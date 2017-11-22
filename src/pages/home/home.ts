@@ -16,38 +16,26 @@ import { FavoritesPage } from '../favorites/favorites';
 export class HomePage {
 
   session:boolean = true;
+  obj = [
+    { "TruckMapPage" : TruckMapPage },
+    { "TruckListPage" : TruckListPage },
+    { "CanivalPage" : CanivalPage },
+    { "ReviewsPage" :  ReviewsPage },
+    { "SupportPage" :  SupportPage },
+    { "FavoritesPage" :  FavoritesPage },
+  ]
 
 
   constructor(public navCtrl: NavController) {
 
   }
 
-
-  goToTruckList() {
-    this.navCtrl.push(TruckListPage);
+  goToPages(page:string) {
+    for(let i=0; i<this.obj.length; i++) {
+      if(Object.keys(this.obj[i])[0] === page) {
+        console.log(Object.keys(this.obj[i])[0]);
+        this.navCtrl.push(this.obj[i][page]);
+      }
+    }
   }
-
-  goToTruckMap() {
-    this.navCtrl.push(TruckMapPage);
-  }
-
-  goToCanival() {
-    this.navCtrl.push(CanivalPage);
-  }
-
-  goToSupport() {
-    this.navCtrl.push(SupportPage);
-  }
-
-  goToFavorites() {
-    this.navCtrl.push(FavoritesPage);
-  }
-
-  goToReviews() {
-    this.navCtrl.push(ReviewsPage);
-  }
-
-
-
-
 }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -15,9 +14,16 @@ and Angular DI.
 @Injectable()
 export class TruckProvider {
 
+  private subject = new Subject<any>();
+  private truckUrl: string = "http://localhost:8080/trucks";
 
   constructor(public http: Http) {
     console.log('Hello TruckProvider Provider');
+  }
+
+  truckgetAll(): Observable<any> {
+    const url = `${this.truckUrl}`;
+    return this.http.get(url)
   }
 
 }

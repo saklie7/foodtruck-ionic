@@ -1,11 +1,10 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { AgmCoreModule, MapsAPILoader } from '@agm/core';
+import { NavController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { TruckProvider } from '../../providers/truck/truck';
 
+import { Truck } from '../../_models/truck.model';
 /**
 * Generated class for the TruckMapPage page.
 *
@@ -13,55 +12,99 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 * Ionic pages and navigation.
 */
 
-@IonicPage()
+declare var google;
+
 @Component({
   selector: 'page-truck-map',
   templateUrl: 'truck-map.html',
 })
-export class TruckMapPage implements OnInit{
+export class TruckMapPage {
 
-  // public trucks: Truck[] = [];
-  public latitude: number;
-  public longitude: number;
-  public searchControl: FormControl;
-  public zoom: number;
-  public mapTypeId: string;
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  infoWindows: any;
 
+  trucks: Truck[] = [];
+
+  lat:number;
+  lng:number;
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-  ) {}
-
-  ngOnInit() {
-    this.zoom = 16;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
-    this.mapTypeId = 'roadmap'; // 'roadmap'|'hybrid'|'satellite'|'terrain'
-    //set current position
-    this.setCurrentPosition();
+    public geolocation: Geolocation,
+    public truckService: TruckProvider,
+  ) {
+    this.infoWindows = [];
   }
 
-  private setCurrentPosition() {
-    console.log('set='+ navigator);
-    console.log('set='+ navigator.geolocation.getCurrentPosition);
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
+  ionViewDidLoad(){
+    this.loadMap();
+  }
 
-        this.latitude = position.coords.latitude;
-        console.log('lat'+this.latitude)
-        this.longitude = position.coords.longitude;
-        console.log('lng'+this.longitude)
-        this.zoom = 16;
-        console.log(position.coords);
+  loadMap(){
+    this.geolocation.getCurrentPosition().then((position) => {
+      this.lat = position.coords.latitude;
+      this.lng = position.coords.longitude;
+      let latLng = new google.maps.LatLng(this.lat, this.lng);
+
+      let mapOptions = {
+        center: latLng,
+        zoom: 17,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+      this.addMarker();
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+  // Add Marker & infowindow
+  addMarker() {
+  this.truckService.truckgetAll().subscribe(trucks => {
+    this.trucks = trucks.json();
+    for(let i=0; i<this.trucks.length; i++) {
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {
+          lat : this.trucks[i].tlat,
+          lng : this.trucks[i].tlng
+        }
       });
-    }
-  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TruckMapPage');
+      let content = "<p>"+this.trucks[i].tname+"</p><hr><a (click)=test1()>바로가기</a>";
+
+      let infoWindow = new google.maps.InfoWindow({
+        content: content
+      });
+
+      // Marker clicked popup infowindow
+      google.maps.event.addListener(marker, 'click', () => {
+      this.closeAllInfoWindows();
+      infoWindow.open(this.map, marker);
+      this.map.setCenter({
+        lat : this.trucks[i].tlat,
+        lng : this.trucks[i].tlng
+      });
+    });
+    this.infoWindows.push(infoWindow);
   }
+});
+}
+
+// get Truck list
+getTrucks() {
+this.truckService.truckgetAll().subscribe(trucks => {
+  this.trucks = trucks.json();
+});
+}
+
+// infowindow close
+closeAllInfoWindows() {
+for(let window of this.infoWindows) {
+  window.close();
+};
+}
 
 }

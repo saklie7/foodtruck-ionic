@@ -28,7 +28,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="col-sm-4 service-description" text-center>
-        <a (click)="goToTruckMap()"><ion-icon ios="ios-map-outline" md="ios-map-outline"></ion-icon></a><br>
+        <a (click)="goToPages('TruckMapPage')"><ion-icon ios="ios-map-outline" md="ios-map-outline"></ion-icon></a><br>
         <h4><strong>트럭지도</strong></h4>
         <p>
           현재 위치를 기반으로 <br>
@@ -36,7 +36,7 @@
         </p>
       </ion-col>
       <ion-col class="col-sm-4 service-description" text-center>
-        <a (click)="goToTruckList()"><ion-icon ios="ios-list" md="ios-list" aria-hidden="true"></ion-icon></a><br>
+        <a (click)="goToPages('TruckListPage')"><ion-icon ios="ios-list" md="ios-list" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>트럭리스트</strong></h4>
         <p>
           모든 트럭을 리스트 형식으로 보고 <br>
@@ -44,7 +44,7 @@
         </p>
       </ion-col>
       <ion-col class="col-sm-4 service-description" text-center>
-        <a (click)="goToCanival()"><ion-icon ios="ios-calendar-outline" md="ios-calendar-outline"></ion-icon></a><br>
+        <a (click)="goToPages('CanivalPage')"><ion-icon ios="ios-calendar-outline" md="ios-calendar-outline"></ion-icon></a><br>
         <h4><strong>축제정보</strong></h4>
         <p>
           서울지역에 있는 축제 정보를 제공합니다.<br><br>
@@ -53,21 +53,21 @@
     </ion-row>
     <ion-row>
       <ion-col class="col-sm-4 service-description" text-center *ngIf="session" >
-        <a (click)="goToReviews()" text-center> <ion-icon ios="ios-create-outline" md="ios-create-outline" aria-hidden="true"></ion-icon></a><br>
+        <a (click)="goToPages('ReviewsPage')" text-center> <ion-icon ios="ios-create-outline" md="ios-create-outline" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>나의리뷰</strong></h4>
         <p>
           내의 리뷰를 모두 볼 수 있습니다.<br><br>
         </p>
       </ion-col>
       <ion-col class="col-sm-4 service-description" text-center *ngIf="session">
-        <a (click)="goToFavorites()"><ion-icon ios="ios-happy-outline" md="ios-happy-outline" aria-hidden="true"></ion-icon></a><br>
+        <a (click)="goToPages('FavoritesPage')"><ion-icon ios="ios-happy-outline" md="ios-happy-outline" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>나의즐겨찾기</strong></h4>
         <p>
           트럭을 즐겨찾기 할 수 있습니다.<br><br>
         </p>
       </ion-col>
       <ion-col class="col-sm-4 service-description" text-center>
-        <a (click)="goToSupport()"><ion-icon ios="ios-help" md="md-help" aria-hidden="true"></ion-icon></a><br>
+        <a (click)="goToPages('SupportPage')"><ion-icon ios="ios-help" md="md-help" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>고객센터</strong></h4>
         <p>
           문의글을 남겨주세요. <br>

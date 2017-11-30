@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
 import { TruckMapPage } from '../truck-map/truck-map';
@@ -8,14 +8,15 @@ import { ReviewsPage } from '../reviews/reviews';
 import { SupportPage } from '../support/support';
 import { FavoritesPage } from '../favorites/favorites';
 
+import { Member } from '../../_models/member.model';
+
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit{
 
-  session:boolean = true;
   obj = [
     { "TruckMapPage" : TruckMapPage },
     { "TruckListPage" : TruckListPage },
@@ -24,11 +25,16 @@ export class HomePage {
     { "SupportPage" :  SupportPage },
     { "FavoritesPage" :  FavoritesPage },
   ]
-
+  isLogin: boolean;
 
   constructor(public navCtrl: NavController) {
 
   }
+
+  ngOnInit() {
+    if(sessionStorage.getItem('member'))
+        this.isLogin = true;
+    }
 
   goToPages(page:string) {
     for(let i=0; i<this.obj.length; i++) {

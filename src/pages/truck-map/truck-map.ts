@@ -1,10 +1,22 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
+import { TruckInfoPage } from '../../pages/truck-info/truck-info';
 import { TruckProvider } from '../../providers/truck/truck';
 
 import { Truck } from '../../_models/truck.model';
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapOptions,
+  GoogleMapsEvent,
+  LatLng,
+  CameraPosition,
+  MarkerOptions,
+  Marker,
+  HtmlInfoWindow
+} from '@ionic-native/google-maps';
 /**
 * Generated class for the TruckMapPage page.
 *
@@ -21,7 +33,7 @@ declare var google;
 export class TruckMapPage {
 
   @ViewChild('map') mapElement: ElementRef;
-  map: any;
+  map: GoogleMap;
   infoWindows: any;
 
   trucks: Truck[] = [];
@@ -30,81 +42,95 @@ export class TruckMapPage {
   lng:number;
 
   constructor(
-    public navCtrl: NavController,
-    public geolocation: Geolocation,
-    public truckService: TruckProvider,
+    private navCtrl: NavController,
+    private geolocation: Geolocation,
+    private truckService: TruckProvider,
+    private googleMaps: GoogleMaps
   ) {
     this.infoWindows = [];
+
   }
 
   ionViewDidLoad(){
+    this.geolocation.getCurrentPosition().then((position) => {
+      this.lat = position.coords.latitude;
+      this.lng = position.coords.longitude;
+    });
     this.loadMap();
   }
 
   loadMap(){
-    this.geolocation.getCurrentPosition().then((position) => {
-      this.lat = position.coords.latitude;
-      this.lng = position.coords.longitude;
-      let latLng = new google.maps.LatLng(this.lat, this.lng);
-
-      let mapOptions = {
-        center: latLng,
-        zoom: 17,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+    let mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: 43.0741904,
+          lng: -89.3809802
+        },
+        zoom: 18,
+        tilt: 30
       }
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      this.addMarker();
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-  }
+    };
 
-  // Add Marker & infowindow
-  addMarker() {
-  this.truckService.truckgetAll().subscribe(trucks => {
-    this.trucks = trucks.json();
-    for(let i=0; i<this.trucks.length; i++) {
-      let marker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
+    this.map = GoogleMaps.create('map', mapOptions);
+    this.map.getMyLocation().then(res => {
+      this.lat = res.latLng['lat'];
+      this.lng = res.latLng['lng'];
+    })
+
+    // Wait the MAP_READY before using any methods.
+    this.map.one(GoogleMapsEvent.MAP_READY)
+    .then(() => {
+      console.log('Map is ready!');
+      this.map.setCameraTarget({lat: this.lat, lng: this.lng});
+      this.map.addMarker({
+        title: 'Ionic',
+        icon: 'red',
+        animation: 'BOUNCE',
         position: {
-          lat : this.trucks[i].tlat,
-          lng : this.trucks[i].tlng
+          lat: this.lat,
+          lng: this.lng
         }
-      });
+      })
 
-      let content = "<p>"+this.trucks[i].tname+"</p><hr><a (click)=test1()>바로가기</a>";
+      // Now you can use all methods safely.
+      this.truckService.truckgetAll().subscribe(trucks => {
+      this.trucks = trucks.json();
+      for(let i=0; i<this.trucks.length; i++) {
 
-      let infoWindow = new google.maps.InfoWindow({
-        content: content
-      });
+        // info window
+        let htmlInfoWindow = new HtmlInfoWindow();
+        let frame: HTMLElement = document.createElement('div');
+        frame.innerHTML = [
+          '<h3>'+this.trucks[i].tname+'</h3>',
+          '<button (click)="goToPage()">바로가기</button>'
+        ].join("");
+        // frame.getElementsByTagName("img")[0].addEventListener("click", () => {
+        //   htmlInfoWindow.setBackgroundColor('red');
+        // });
+        htmlInfoWindow.setContent(frame, {width: "40%", height: "10%"});
 
-      // Marker clicked popup infowindow
-      google.maps.event.addListener(marker, 'click', () => {
-      this.closeAllInfoWindows();
-      infoWindow.open(this.map, marker);
-      this.map.setCenter({
-        lat : this.trucks[i].tlat,
-        lng : this.trucks[i].tlng
+        // add marker
+        this.map.addMarker({
+        // title: this.trucks[i].tname,
+        icon: 'blue',
+        animation: 'DROP',
+        position: {
+          lat: parseFloat(this.trucks[i].tlat),
+          lng: parseFloat(this.trucks[i].tlng)
+        }
+      })
+      .then(marker => {
+        marker.on(GoogleMapsEvent.MARKER_CLICK)
+        .subscribe(() => {
+          htmlInfoWindow.open(marker);
+        });
       });
-    });
-    this.infoWindows.push(infoWindow);
-  }
+    }
+  });
 });
 }
-
-// get Truck list
-getTrucks() {
-this.truckService.truckgetAll().subscribe(trucks => {
-  this.trucks = trucks.json();
-});
-}
-
-// infowindow close
-closeAllInfoWindows() {
-for(let window of this.infoWindows) {
-  window.close();
-};
+goToPage() {
+  this.navCtrl.push(TruckInfoPage);
 }
 
 }

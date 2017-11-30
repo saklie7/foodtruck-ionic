@@ -15,10 +15,15 @@ and Angular DI.
 export class TruckProvider {
 
   private subject = new Subject<any>();
-  private truckUrl: string = "http://localhost:8080/trucks";
+  private truckUrl: string = "http://35.194.125.211/trucks";
 
   constructor(public http: Http) {
     console.log('Hello TruckProvider Provider');
+  }
+
+  getObservable(): Observable<any> {
+    // console.log('getObservable() working');
+    return this.subject.asObservable();
   }
 
   truckgetAll(): Observable<any> {

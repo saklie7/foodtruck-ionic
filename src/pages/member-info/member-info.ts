@@ -1,11 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ReviewsPage } from './reviews/reviews';
 import { FavoritesPage } from './favorites/favorites';
 import { ProfilePage } from './profile/profile';
 
-import { SegmentButton, Slides } from 'ionic-angular';
 /**
  * Generated class for the MemberInfoPage page.
  *

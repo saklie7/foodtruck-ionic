@@ -31,9 +31,6 @@ export class HomePage implements OnInit{
     }
   }
 
-
-
-
   goToPages(page:string) {
     for(let i=0; i<this.obj.length; i++) {
       if(Object.keys(this.obj[i])[0] === page) {

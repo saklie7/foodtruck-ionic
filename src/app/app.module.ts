@@ -15,7 +15,6 @@ import { CanivalPage } from '../pages/canival/canival';
 import { CanivalInfoPage } from '../pages/canival-info/canival-info';
 import { ReviewWritePage } from '../pages/review-write/review-write';
 import { SupportPage } from '../pages/support/support';
-import { MemberInfoPage } from '../pages/member-info/member-info';
 import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { FoodRegistPage } from '../pages/food-regist/food-regist';
@@ -53,7 +52,6 @@ import { MemberInfoPageModule } from '../pages/member-info/member-info.module';
     CanivalInfoPage,
     ReviewWritePage,
     SupportPage,
-    MemberInfoPage,
     LoginPage,
     JoinPage,
     FoodRegistPage
@@ -78,7 +76,6 @@ import { MemberInfoPageModule } from '../pages/member-info/member-info.module';
     CanivalInfoPage,
     ReviewWritePage,
     SupportPage,
-    MemberInfoPage,
     LoginPage,
     JoinPage,
     FoodRegistPage

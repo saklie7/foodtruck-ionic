@@ -1,8 +1,11 @@
 <!--
-  Generated template for the ProfilePage page.
+  Generated template for the FavoritesPage page.
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
+<!-- <ion-content padding>
+</ion-content> -->
 <ion-header>
   <ion-navbar>
     <button start ion-button menuToggle icon-only>
@@ -12,34 +15,48 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <form #modifyForm="ngForm" (ngSubmit)="modify(modifyForm)" autocomplete="off">
+<ion-content>
+  <ion-list *ngFor="let f of favorites">
     <ion-row>
-      <ion-col>
-        <ion-list inset>
-          <ion-item>
-            <ion-label floating>Email</ion-label>
-            <ion-input name="email" id="loginField" type="text" [(ngModel)]="model.memail" required readonly></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label floating>Password</ion-label>
-            <ion-input name="password" id="passwordField" type="text" [(ngModel)]="model.mpassword" required ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label floating>Nickname</ion-label>
-            <ion-input name="nickname" id="nicknameField" type="text" [(ngModel)]="model.mnickname" required ></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
+      <button ion-item (click)="goToTruckInfo(f)">
+        <ion-avatar item-start>
+          <img src="http://localhost:8080/image/{{f.timage}}">
+        </ion-avatar>
+        <h2>{{f.tname}}</h2>
+        <p>{{f.tavg}} 점 | {{f.topen}} ~ {{f.tclose}}</p>
+        <p>주소 : {{f.taddress}}</p>
+      </button>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <!-- <div *ngIf="error" class="alert alert-danger">{{error}}</div> -->
-        <button ion-button class="submit-btn" full type="submit" [disabled]="!modifyForm.form.valid">
-          Save
+  </ion-list>
+
+  <!-- <ion-list *ngFor="let f of favorites">
+    <ion-item-sliding>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="http://localhost:8080/image/{{f.timage}}">
+        </ion-avatar>
+        <h2>{{f.tname}}</h2>
+        <p>{{f.tavg}} 점 | {{f.topen}} ~ {{f.tclose}}</p>
+        <p>영업시간: {{h.topen}} ~ {{h.tclose}}</p>
+        <p>주소 : {{f.taddress}}</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="danger" icon-start>
+          <ion-icon name="trash"></ion-icon>
+          Delete
         </button>
-        <br>
-      </ion-col>
-    </ion-row>
-  </form>
+        <button ion-button color="primary" icon-start (click)="goToTruckInfo(f)">
+          <ion-icon name="log-in"></ion-icon>
+          Enter
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> -->
+
+  <ion-card *ngIf="error">
+    <ion-card-content>
+      {{error}}
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

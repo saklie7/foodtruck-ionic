@@ -5,7 +5,6 @@ import { AuthenticationProvider } from '../../providers/authentication/authentic
 import { ToastProvider } from '../../providers/toast/toast';
 //pages
 import { JoinPage } from '../join/join';
-import { HomePage } from '../home/home';
 
 /**
  * Generated class for the LoginPage page.

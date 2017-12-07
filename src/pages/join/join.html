@@ -1,21 +1,61 @@
 <!--
   Generated template for the JoinPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle >
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>join</ion-title>
+    <ion-buttons left>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name='arrow-back'></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>회원가입</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <form #joinForm="ngForm" (ngSubmit)="join(joinForm)" autocomplete="off">
+    <ion-row>
+      <ion-col>
+        <ion-list inset>
+          <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input name="email" id="loginField" type="text" required [(ngModel)]="model.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input name="password" id="passwordField" type="password" required [(ngModel)]="model.password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Nickname</ion-label>
+            <ion-input name="nickname" id="nicknameField" type="text" required [(ngModel)]="model.nickname"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item>
+            <ion-label floating>Registype</ion-label>
+            <ion-select name="registype" id="registypeField" [(ngModel)]="model.registype">
+              <ion-option value="1">Member</ion-option>
+              <ion-option value="2">Business</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!joinForm.form.valid">
+          Regist
+        </button>
+        <br>
+        <div text-center>
+          <!-- <span class="message">계정이 있나요? </span><a (click)="goToLogin()">Login</a> -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </form>
 </ion-content>

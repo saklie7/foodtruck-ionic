@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { TruckMapPage } from '../pages/truck-map/truck-map';
 import { TruckListPage } from '../pages/truck-list/truck-list';
 import { TruckInfoPage } from '../pages/truck-info/truck-info';
@@ -18,6 +17,7 @@ import { TruckRegistPage } from '../pages/truck-regist/truck-regist';
 //providers
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { TruckProvider } from '../providers/truck/truck';
+import { MemberProvider } from '../providers/member/member';
 
 
 @Component({
@@ -31,16 +31,17 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
 
   member: any;
+  truck: any;
   nickname: string;
   registype: number;
-  check: number;
-
+  check: number; //사업자 회원이 트럭등록을 했는지 체크
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public authService: AuthenticationProvider,
     public truckProvider: TruckProvider,
+    public memberProvider: MemberProvider,
   ) {
     this.initializeApp();
 
@@ -50,7 +51,7 @@ export class MyApp {
       this.nickname = this.member.mnickname;
       this.registype = this.member.mregistype;
       // console.log(this.registype);
-      if(this.registype === 2) {
+      if (this.registype === 2) {
         // console.log('2222');
         this.checkTruck(this.member.memail);
       }
@@ -75,9 +76,8 @@ export class MyApp {
           this.member = JSON.parse(window.localStorage.getItem('member'));
           this.nickname = this.member.mnickname;
           this.registype = this.member.mregistype;
-          console.log('this.registype = '+this.registype);
-          if(this.registype === 2) {
-            console.log('2222');
+
+          if (this.registype === 2) { //사업자일때, 등록트럭체크
             this.checkTruck(this.member.memail);
           }
           this.nav.setRoot(HomePage);
@@ -90,6 +90,17 @@ export class MyApp {
         }
       }
     );
+
+    //프로필 수정 했을 때, 비동기방법으로 처리해서 nickname을 새로 설정
+    this.memberProvider.getObservable().subscribe(
+      result => {
+        //확인
+        console.log('appcomponent localStorage = '+window.localStorage.getItem('member'));
+        console.log('appcomponent result.modify= '+ result.modify);
+        this.member = JSON.parse(window.localStorage.getItem('member'));
+        this.nickname = this.member.mnickname;
+      }
+    )
 
     //사업자가 트럭 등록을 하면 나의 트럭가기 버튼으로 변경할 수 있게 제어
     this.truckProvider.getObservable().subscribe(res => {
@@ -109,13 +120,16 @@ export class MyApp {
 
   //사업자회원이면 트럭등록을 했는지 확인
   checkTruck(email: string) {
-    this.authService.checkTruck(email).subscribe(res=>{
-      console.log('appcomponent checkTruck = '+res);
-      if(res === '0') {
+    this.authService.checkTruck(email).subscribe(result => {
+      // console.log('appcomponent checkTruck = '+res);
+      let res = result.text();
+      if (res === '0') {
         //트럭등록 안함
         this.check = 0;
       } else {
         //트럭등록 함
+        // console.log('res ===== '+JSON.parse(res))
+        this.truck = JSON.parse(res);
         this.check = 1;
       }
     });
@@ -123,11 +137,11 @@ export class MyApp {
 
   //기본 페이지
   openPage(page) {
-    this.nav.setRoot(page.component);
+      this.nav.setRoot(page.component);
   }
 
   goToLogin() {
-    this.nav.setRoot(LoginPage);
+    this.nav.push(LoginPage);
   }
 
   goToJoin() {
@@ -135,21 +149,25 @@ export class MyApp {
   }
 
   goToLogout() {
-    this.authService.logout().subscribe(res=>console.log(res));
-    this.nav.setRoot(LoginPage);
+    this.authService.logout().subscribe(res => {
+      localStorage.removeItem('member');
+      this.nav.setRoot(HomePage);
+    });
   }
 
   //마이페이지와 비슷 - 나의리뷰,즐겨찾기,프로필수정 이용
   goToMemberInfo() {
-    this.nav.setRoot(MemberInfoPage);
+    this.nav.push(MemberInfoPage);
   }
 
   goToTruckRegist() {
-    this.nav.setRoot(TruckRegistPage);
+    this.nav.push(TruckRegistPage);
   }
 
   goToTruckInfo() {
     //TODO:나의 트럭가기 보충해줘야함
-    this.nav.setRoot(TruckInfoPage);
+    this.nav.push(TruckInfoPage, {
+      truck: this.truck
+    });
   }
 }

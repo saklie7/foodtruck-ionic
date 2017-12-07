@@ -1,6 +1,6 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
@@ -46,16 +46,16 @@ export class AuthenticationProvider {
   }
 
   //login한 회원이 사업자이면 등록한 트럭이 있는지 확인
-  checkTruck(email: string): Observable<any> {
-    const url = `http://localhost:8080/trucks/member/${email}`;
+  checkTruck(email: string) {
+    const url = `http://35.194.125.211/trucks/member/${email}`;
     // console.log('checkTruck url = '+url);
-    return this.http.get(url).map(res=>res.text());
+    return this.http.get(url);
   }
 
   logout(): Observable<any> {
     const url = `${this.loginUrl}/logout`;
     this.subject.next({ login: null });
-    return this.http.get(url).map(res=>res.text());
+    return this.http.get(url);
   }
 
 }

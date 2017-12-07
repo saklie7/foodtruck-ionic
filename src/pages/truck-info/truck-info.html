@@ -1,21 +1,128 @@
 <!--
   Generated template for the TruckInfoPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle >
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>truck-info</ion-title>
+    <ion-title small>{{truck.tname}},{{truck.tid}}</ion-title>
+
+    <!-- 나의 즐겨찾기로 들오올때만 보여줌. -->
+    <ion-buttons left *ngIf="modal">
+      <button ion-button (click)="dismiss()">
+        <ion-icon name='arrow-back'></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start *ngIf="member && !truckOwner">
+      <button ion-button *ngIf="check" (click)="deleteFavorite(truck.tid)" clear small>
+        <ion-icon class="iconHeart" name='heart'></ion-icon>
+      </button>
+      <button ion-button *ngIf="!check" (click)="addFavorite(truck.tid)" clear small>
+        <ion-icon class="iconHeart" name='heart-outline'></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="cards-bg outer-content">
+  <ion-card>
+    <img src="http://35.194.125.211/image/{{truck.timage}}" />
+    <ion-card-content>
+      <!-- <ion-card-title>
+        NO. {{truck.tid}} | {{truck.tname}}
+      </ion-card-title> -->
+      <p> 주소 : {{truck.taddress}}</p>
+      <p> 영업시간 : {{truck.topen}} ~ {{truck.tclose}} </p>
+      <p> 평점 : {{truck.tavg}}</p>
+    </ion-card-content>
+    <ion-row text-center no-padding *ngIf="truckOwner">
+      <ion-col no-padding style="background: rgba(224, 228, 228, 0.45)">
+        <button ion-button clear style="color: #707474" (click)="presentTruckModal()" icon-start>
+          <ion-icon ios="ios-car" md="ios-car"></ion-icon>
+          트럭정보수정
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
 
+  <div padding>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="menus">
+        menus
+      </ion-segment-button>
+      <ion-segment-button value="reviews">
+        reviews
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'menus'">
+      <ion-row *ngIf="truckOwner">
+        <ion-col style="margin: 0px 8px 0px 8px">
+          <button ion-button full icon-start color="light" (click)="presentProfileModal()">
+            <ion-icon name="restaurant"></ion-icon>
+            메뉴 등록하기
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-item-sliding  *ngFor="let f of foods">
+        <ion-item>
+          <ion-thumbnail item-start>
+            <img src="http://35.194.125.211/image/{{f.fimage}}">
+          </ion-thumbnail>
+          <h2>이름 : {{f.fname}}</h2>
+          <h2>가격 : {{f.fprice}}</h2>
+        </ion-item>
+        <ion-item-options *ngIf="truckOwner">
+          <button ion-button color="secondary" icon-start>
+            <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
+            Update
+          </button>
+          <button ion-button color="danger" icon-start>
+            <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-card *ngIf="foodError">
+        <ion-card-content>
+          {{foodError}}
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'reviews'">
+      <ion-row  *ngIf="member && !truckOwner">
+        <ion-col style="margin: 0px 8px 0px 8px">
+          <button ion-button full icon-start color="light" (click)="presentReviewModal()">
+            <ion-icon name="create"></ion-icon>
+            리뷰 작성하기
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item *ngFor="let r of reviews">
+            <ion-thumbnail item-start *ngIf="r.rimage">
+              <img src="http://35.194.125.211/image/{{r.rimage}}">
+            </ion-thumbnail>
+            <h3>작성자: {{r.rmember}}</h3>
+            <h3>작성일 : {{ r.rdate}}</h3>
+            <h3>내용 : {{r.rcomment}} </h3>
+            <h3>점수: {{r.rscore}}</h3>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-card *ngIf="reviewError">
+        <ion-card-content>
+          {{reviewError}}
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
 </ion-content>

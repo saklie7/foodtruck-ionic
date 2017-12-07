@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle >
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu" ></ion-icon>
     </button>
     <ion-title>Food Truck</ion-title>
   </ion-navbar>
@@ -52,14 +52,14 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="col-sm-4 service-description" text-center *ngIf="session" >
+      <ion-col class="col-sm-4 service-description" text-center *ngIf="isLogin" >
         <a (click)="goToPages('ReviewsPage')" text-center> <ion-icon ios="ios-create-outline" md="ios-create-outline" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>나의리뷰</strong></h4>
         <p>
           내의 리뷰를 모두 볼 수 있습니다.<br><br>
         </p>
       </ion-col>
-      <ion-col class="col-sm-4 service-description" text-center *ngIf="session">
+      <ion-col class="col-sm-4 service-description" text-center *ngIf="isLogin">
         <a (click)="goToPages('FavoritesPage')"><ion-icon ios="ios-happy-outline" md="ios-happy-outline" aria-hidden="true"></ion-icon></a><br>
         <h4><strong>나의즐겨찾기</strong></h4>
         <p>

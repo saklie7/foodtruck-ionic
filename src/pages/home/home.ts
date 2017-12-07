@@ -1,14 +1,10 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
 import { TruckMapPage } from '../truck-map/truck-map';
 import { TruckListPage } from '../truck-list/truck-list';
 import { CanivalPage } from '../canival/canival';
-import { ReviewsPage } from '../reviews/reviews';
 import { SupportPage } from '../support/support';
-import { FavoritesPage } from '../favorites/favorites';
-
-import { Member } from '../../_models/member.model';
 
 
 @Component({
@@ -21,9 +17,7 @@ export class HomePage implements OnInit{
     { "TruckMapPage" : TruckMapPage },
     { "TruckListPage" : TruckListPage },
     { "CanivalPage" : CanivalPage },
-    { "ReviewsPage" :  ReviewsPage },
     { "SupportPage" :  SupportPage },
-    { "FavoritesPage" :  FavoritesPage },
   ]
   isLogin: boolean;
 
@@ -32,9 +26,13 @@ export class HomePage implements OnInit{
   }
 
   ngOnInit() {
-    if(sessionStorage.getItem('member'))
-        this.isLogin = true;
+    if(localStorage.getItem('member')){
+      this.isLogin = true;
     }
+  }
+
+
+
 
   goToPages(page:string) {
     for(let i=0; i<this.obj.length; i++) {

@@ -1,5 +1,5 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { TruckInfoPage } from '../../pages/truck-info/truck-info';
@@ -11,10 +11,6 @@ import {
   GoogleMap,
   GoogleMapOptions,
   GoogleMapsEvent,
-  LatLng,
-  CameraPosition,
-  MarkerOptions,
-  Marker,
   HtmlInfoWindow
 } from '@ionic-native/google-maps';
 /**
@@ -24,7 +20,6 @@ import {
 * Ionic pages and navigation.
 */
 
-declare var google;
 
 @Component({
   selector: 'page-truck-map',
@@ -45,13 +40,13 @@ export class TruckMapPage {
     private navCtrl: NavController,
     private geolocation: Geolocation,
     private truckService: TruckProvider,
-    private googleMaps: GoogleMaps
   ) {
     this.infoWindows = [];
 
   }
 
   ionViewDidLoad(){
+    console.log('map load')
     this.geolocation.getCurrentPosition().then((position) => {
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
@@ -83,7 +78,7 @@ export class TruckMapPage {
       console.log('Map is ready!');
       this.map.setCameraTarget({lat: this.lat, lng: this.lng});
       this.map.addMarker({
-        title: 'Ionic',
+        title: '내 위치',
         icon: 'red',
         animation: 'BOUNCE',
         position: {
@@ -93,7 +88,7 @@ export class TruckMapPage {
       })
 
       // Now you can use all methods safely.
-      this.truckService.truckgetAll().subscribe(trucks => {
+      this.truckService.getTrucks().subscribe(trucks => {
       this.trucks = trucks.json();
       for(let i=0; i<this.trucks.length; i++) {
 
@@ -101,7 +96,7 @@ export class TruckMapPage {
         let htmlInfoWindow = new HtmlInfoWindow();
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          '<h3>'+this.trucks[i].tname+'</h3>',
+          '<div>'+this.trucks[i].tname+'</div>',
           '<button (click)="goToPage()">바로가기</button>'
         ].join("");
         // frame.getElementsByTagName("img")[0].addEventListener("click", () => {

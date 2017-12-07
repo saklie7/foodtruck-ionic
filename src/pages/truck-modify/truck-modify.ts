@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the FavoritesPage page.
+ * Generated class for the TruckModifyPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-favorites',
-  templateUrl: 'favorites.html',
+  selector: 'page-truck-modify',
+  templateUrl: 'truck-modify.html',
 })
-export class FavoritesPage {
+export class TruckModifyPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FavoritesPage');
+    console.log('ionViewDidLoad TruckModifyPage');
   }
 
 }

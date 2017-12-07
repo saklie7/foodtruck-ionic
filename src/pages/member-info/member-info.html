@@ -1,18 +1,39 @@
 <!--
   Generated template for the MemberInfoPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>member-info</ion-title>
+    <ion-title>Member Info</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
-
+  <ion-tabs class="tabs-icon-text" color="" selectedIndex="0" tabsPlacement="top">
+    <ion-tab tabIcon="text" tabTitle="review" [root]="tab1"></ion-tab>
+    <ion-tab tabIcon="heart" tabTitle="favorite" [root]="tab2"></ion-tab>
+    <ion-tab tabIcon="settings" tabTitle="profile" [root]="tab3"></ion-tab>
+  </ion-tabs>
 </ion-content>
+
+<!-- <ion-content padding>
+  <ion-slides (ionSlideDidChange)="onSlideChanged($event)" #loopSlider>
+    <ion-slide *ngFor="let slide of slides">
+      {{slide.component}}
+    </ion-slide>
+  </ion-slides>
+</ion-content> -->
+
+<!-- <ion-content>
+  <ion-slides (ionSlideDidChange)="onSlideChanged($event)" #loopSlider zoom>
+    <ion-slide *ngFor="let slide of slides" >
+      <page-reviews  *ngIf="slide.id === 'review'"></page-reviews>
+      <page-favorites *ngIf="slide.id === 'favorite'"></page-favorites>
+      <page-profile *ngIf="slide.id === 'profile'"></page-profile>
+      <ion-nav [root]="root"></ion-nav>
+    </ion-slide>
+  </ion-slides>
+</ion-content> -->

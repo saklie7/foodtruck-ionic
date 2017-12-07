@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the ReviewsPage page.
+ * Generated class for the ReviewWritePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-reviews',
-  templateUrl: 'reviews.html',
+  selector: 'page-review-write',
+  templateUrl: 'review-write.html',
 })
-export class ReviewsPage {
+export class ReviewWritePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewsPage');
+    console.log('ionViewDidLoad ReviewWritePage');
   }
 
 }
